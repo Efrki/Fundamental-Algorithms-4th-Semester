@@ -1,0 +1,13 @@
+# Build directories
+build/
+*/build/
+*.o
+*.a
+*.so
+*.out
+*.exe
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.user
