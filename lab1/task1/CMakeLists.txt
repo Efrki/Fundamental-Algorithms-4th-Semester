@@ -1,14 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(MyProject LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 23) # or 23
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 include(CTest)
 enable_testing()
 
 # Флаги компиляции
-add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+add_compile_options(-std=c++20 -Wall -Wextra -Wpedantic -Werror)
 
 # Флаги для покрытия кода (активны только в Debug)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
