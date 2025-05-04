@@ -1,6 +1,5 @@
 #include <iostream>
 #include "../include/array.hpp"
-#include "../include/container.hpp"
 
 
 using namespace my_container;
@@ -11,7 +10,7 @@ int main(int argc, char *argv[])
 
     (void)argc; (void)argv;
 
-    Array<int, 5> arr{10, 20, 30, 40, 50};
+    Array<int, 5> arr{1,2,3,4,5};
 
     for (auto i = arr.cbegin(); i != arr.cend(); i++)
     {

@@ -1,44 +1,53 @@
 #include <iostream>
-#include "double-linked-list.hpp"
+#include "../include/double-linked-list.hpp" // Путь к вашему заголовочному файлу
+
+using namespace my_container;
 
 int main() {
-    using namespace my_container;
+    try {
+        // Создание списка с максимальным размером 5
+        List<int, 5> myList;
 
-    // Создание и инициализация списка
-    List<int> my_list = {10, 20, 30};
-    
-    // Вставка элемента через собственный итератор
-    auto it = my_list.list_begin();
-    ++it; // Переход ко второму элементу
-    my_list.insert(it, 15);
-    
-    // Вывод списка
-    std::cout << "List after insertion: ";
-    for (auto it = my_list.list_begin(); it != my_list.list_end(); ++it) {
-        std::cout << *it << " ";
+        // Добавление элементов
+        myList.push_back(10);
+        myList.push_front(5);
+        myList.push_back(20);
+
+        // Вывод информации
+        std::cout << "Размер списка: " << myList.size() << std::endl;
+        std::cout << "Первый элемент: " << myList.front() << std::endl;
+        std::cout << "Последний элемент: " << myList.back() << std::endl;
+
+        // Вставка элемента
+        auto pos = myList.begin();
+        pos = myList.next(pos); // Переход ко второму элементу
+        myList.insert(pos, 15);
+
+        // Вывод всех элементов через итераторы
+        std::cout << "Элементы списка: ";
+        for (auto it = myList.begin(); it != myList.end(); it = myList.next(it)) {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
+
+        // Удаление элемента
+        pos = myList.next(myList.begin());
+        myList.erase(pos);
+
+        // Проверка после удаления
+        std::cout << "Элементы после удаления: ";
+        for (auto it = myList.begin(); it != myList.end(); it = myList.next(it)) {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
+
+        // Создание второго списка и сравнение
+        List<int, 5> myList2 = {5, 10, 20};
+        std::cout << "Списки равны? " << (myList == myList2 ? "Да" : "Нет") << std::endl;
+
+    } catch (const std::exception& e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
     }
-    std::cout << "\n";
-    
-    // Удаление элемента
-    it = my_list.list_begin();
-    ++it;
-    my_list.erase(it);
-    
-    // Вывод после удаления
-    std::cout << "List after deletion: ";
-    for (auto it = my_list.list_begin(); it != my_list.list_end(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << "\n";
-    
-    // Тестирование граничных случаев
-    my_list.push_front(5);
-    my_list.push_back(40);
-    
-    std::cout << "Final list: ";
-    for (const auto& num : my_list) {
-        std::cout << num << " "; // Используем range-based for из Container
-    }
-    
+
     return 0;
 }
