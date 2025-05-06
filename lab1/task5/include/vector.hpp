@@ -25,7 +25,6 @@ private:
     }
 
 public:
-    // Конструкторы
     Vector() = default;
 
     explicit Vector(size_t count) : data_(new T[count]), size_(count), capacity_(count) {}
@@ -51,7 +50,6 @@ public:
         delete[] data_;
     }
 
-    // Оператор присваивания
     Vector& operator=(const Vector& other) {
         if (this != &other) {
             delete[] data_;
@@ -65,31 +63,26 @@ public:
         return *this;
     }
     Vector& operator=(const Container<T, N>& other) override {
-        // Проверка самоприсваивания
         if (this == &other) return *this;
     
-        // Попытка преобразования типа
         const Vector* other_vec = dynamic_cast<const Vector*>(&other);
         if (!other_vec) {
             throw std::invalid_argument("Invalid container type in Vector assignment");
         }
     
-        // Оптимизация: если capacity достаточна, переиспользуем память
         if (other_vec->size_ > capacity_) {
             delete[] data_;
             data_ = new T[other_vec->capacity_];
             capacity_ = other_vec->capacity_;
         }
     
-        // Копирование элементов с strong exception guarantee
         size_ = 0;
         try {
             for (size_t i = 0; i < other_vec->size_; ++i) {
-                data_[i] = other_vec->data_[i]; // Копирующее присваивание
+                data_[i] = other_vec->data_[i];
                 ++size_;
             }
         } catch (...) {
-            // Откат изменений при исключении
             delete[] data_;
             data_ = nullptr;
             size_ = capacity_ = 0;
@@ -112,7 +105,6 @@ public:
         return *this;
     }
 
-    // Методы доступа
     T& operator[](size_t pos) {
         return data_[pos];
     }
@@ -159,7 +151,6 @@ public:
         return data_;
     }
 
-    // Емкость
     bool empty() const override {
         return size_ == 0;
     }
@@ -184,7 +175,6 @@ public:
         }
     }
 
-    // Модификаторы
     void clear() {
         size_ = 0;
     }
@@ -244,7 +234,6 @@ public:
     }
 
 
-    // Итераторы
     T* begin() override {
         return data_;
     }
@@ -269,7 +258,6 @@ public:
         return data_ + size_;
     }
 
-    // Операторы сравнения
     bool operator==(const Container<T, N>& other) const override {
         const Vector* o = dynamic_cast<const Vector*>(&other);
         if (!o || size_ != o->size_) return false;
@@ -294,4 +282,4 @@ public:
     }
 };
 
-} // namespace my_container
+}

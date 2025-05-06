@@ -23,7 +23,6 @@ private:
     size_t current_size;
 
 public:
-    // Конструкторы
     List() : head(nullptr), tail(nullptr), current_size(0) {}
 
     List(const List& other) : List() {
@@ -45,12 +44,10 @@ public:
         }
     }
 
-    // Деструктор
     ~List() {
         clear();
     }
 
-    // Операторы присваивания
     List& operator=(const List& other) {
         if (this != &other) {
             clear();
@@ -61,19 +58,15 @@ public:
         return *this;
     }
     List& operator=(const Container<T, N>& other) override {
-        // Проверка на самоприсваивание через базовый класс
         if (this == &other) return *this;
     
-        // Динамическое приведение типа для безопасности
         const List* other_list = dynamic_cast<const List*>(&other);
         if (!other_list) {
             throw std::invalid_argument("Container type mismatch in assignment");
         }
     
-        // Очистка текущих данных
         clear();
     
-        // Копирование элементов из other_list
         for (const Node* curr = other_list->head; curr != nullptr; curr = curr->next) {
             push_back(curr->data);
         }
@@ -94,7 +87,6 @@ public:
         return *this;
     }
 
-    // Методы доступа
     T& front() {
         if (empty()) throw std::out_of_range("List is empty");
         return head->data;
@@ -115,7 +107,6 @@ public:
         return tail->data;
     }
 
-    // Итераторы (возвращают указатели на данные)
     T* begin() override { 
         return head ? &head->data : nullptr; 
     }
@@ -156,7 +147,6 @@ public:
         Node* node = reinterpret_cast<Node*>(reinterpret_cast<char*>(current) - offsetof(Node, data));
         return node->prev ? &node->prev->data : nullptr;
     }
-    // Ёмкость
     Node* getNodeFromDataPtr(T* dataPtr) const {
         if (!dataPtr) return nullptr;
         return reinterpret_cast<Node*>(reinterpret_cast<char*>(dataPtr) - offsetof(Node, data));
@@ -166,7 +156,6 @@ public:
     size_t size() const override { return current_size; }
     size_t max_size() const override { return N; }
 
-    // Модификаторы
     void clear() {
         while (!empty()) {
             pop_front();
@@ -271,7 +260,6 @@ public:
         std::swap(current_size, other.current_size);
     }
 
-    // Операторы сравнения
     bool operator==(const Container<T, N>& other) const override {
         const List& otherList = static_cast<const List&>(other);
         if (size() != otherList.size()) return false;
@@ -313,7 +301,6 @@ public:
         return !(*this < other);
     }
 
-    // Для C++20 можно добавить operator<=>
     auto operator<=>(const List& other) const {
         const Node* curr1 = head;
         const Node* curr2 = other.head;
@@ -328,4 +315,4 @@ public:
     }
 };
 
-} // namespace my_container
+}

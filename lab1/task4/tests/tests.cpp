@@ -3,7 +3,6 @@
 
 namespace my_container {
 
-// Тесты для конструкторов
 TEST(StackTest, DefaultConstructor) {
     Stack<int> st;
     EXPECT_TRUE(st.empty());
@@ -30,7 +29,6 @@ TEST(StackTest, MoveConstructor) {
     EXPECT_EQ(moved.top(), 9);
 }
 
-// Тесты для операторов присваивания
 TEST(StackTest, CopyAssignment) {
     Stack<int> orig = {10, 20};
     Stack<int> copy;
@@ -47,7 +45,6 @@ TEST(StackTest, MoveAssignment) {
     EXPECT_EQ(moved.top(), 40);
 }
 
-// Тесты для методов доступа
 TEST(StackTest, TopAccess) {
     Stack<int> st = {100, 200};
     EXPECT_EQ(st.top(), 200);
@@ -60,7 +57,6 @@ TEST(StackTest, EmptyStackAccess) {
     EXPECT_THROW(st.top(), std::out_of_range);
 }
 
-// Тесты для емкости
 TEST(StackTest, CapacityMethods) {
     Stack<int, List, 3> st;
     EXPECT_EQ(st.max_size(), 3);
@@ -69,7 +65,6 @@ TEST(StackTest, CapacityMethods) {
     EXPECT_FALSE(st.empty());
 }
 
-// Тесты для модификаторов
 TEST(StackTest, PushPopOperations) {
     Stack<int> st;
     st.push(1);
@@ -99,7 +94,6 @@ TEST(StackTest, SwapOperation) {
     EXPECT_EQ(st2.top(), 2);
 }
 
-// Тесты для операторов сравнения
 TEST(StackTest, ComparisonOperators) {
     Stack<int> st1 = {1, 2, 3};
     Stack<int> st2 = {1, 2, 3};
@@ -111,7 +105,6 @@ TEST(StackTest, ComparisonOperators) {
     EXPECT_TRUE(st1 < st3);
 }
 
-// Тест для трехстороннего сравнения (C++20)
 #if __cplusplus >= 202002L
 TEST(StackTest, ThreeWayComparison) {
     Stack<int> st1 = {1, 2};
@@ -120,7 +113,7 @@ TEST(StackTest, ThreeWayComparison) {
 }
 #endif
 
-} // namespace my_container
+}
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);

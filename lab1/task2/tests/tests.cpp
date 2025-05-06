@@ -99,14 +99,13 @@ TEST(ListTest, PushPopOperations) {
 TEST(ListTest, InsertErase) {
     List<int, 5> list = {1, 3};
     
-    // Получаем позицию вставки через следующий элемент
     int* first = list.begin();
     int* pos = list.begin();
-    pos = list.next(pos); // Переход к следующему узлу
+    pos = list.next(pos);
     
     list.insert(pos, 2);
     EXPECT_EQ(list.size(), 3);
-    EXPECT_EQ(*list.next(first), 2); // Проверка через вспомогательный метод
+    EXPECT_EQ(*list.next(first), 2);
     
     list.erase(pos);
     EXPECT_EQ(list.size(), 2);
@@ -157,15 +156,13 @@ TEST(ListTest, Comparisons) {
 }
 
 TEST(ListTest, ContainerAssignmentOperator) {
-    // Тест самоприсваивания
     List<int, 3> list;
     list.push_back(1);
     const Container<int, 3>& base_ref = list;
-    list = base_ref; // Самоприсваивание через базовый класс
+    list = base_ref;
     EXPECT_EQ(list.size(), 1);
     EXPECT_EQ(list.front(), 1);
 
-    // Тест присваивания из другого типа контейнера (должно бросить исключение)
     class DummyContainer : public Container<int, 3> { Container& operator=(const Container&) override { return *this; }
     int* begin() override { return nullptr; }
     const int* begin() const override { return nullptr; }
@@ -182,7 +179,6 @@ TEST(ListTest, ContainerAssignmentOperator) {
     EXPECT_THROW(list = dummy, std::invalid_argument);
 }
 
-// Тесты для константных front()/back()
 TEST(ListTest, ConstFrontBackAccess) {
     const List<int, 3> empty_list;
     EXPECT_THROW(empty_list.front(), std::out_of_range);
@@ -193,7 +189,6 @@ TEST(ListTest, ConstFrontBackAccess) {
     EXPECT_EQ(list.back(), 10);
 }
 
-// Тесты для end()/cend() и обратных итераторов
 TEST(ListTest, EdgeIterators) {
     List<int, 3> list;
     EXPECT_EQ(list.end(), nullptr);
@@ -206,7 +201,6 @@ TEST(ListTest, EdgeIterators) {
     EXPECT_EQ(*list.crbegin(), 42);
 }
 
-// Тесты для pop_back() с удалением последнего элемента
 TEST(ListTest, PopBackEdgeCases) {
     List<int, 3> list = {1};
     list.pop_back();
@@ -214,7 +208,6 @@ TEST(ListTest, PopBackEdgeCases) {
     EXPECT_EQ(list.begin(), nullptr);
 }
 
-// Тесты для push_front() с переходом от пустого списка
 TEST(ListTest, PushFrontToEmpty) {
     List<int, 3> list;
     list.push_front(99);
@@ -223,20 +216,16 @@ TEST(ListTest, PushFrontToEmpty) {
     EXPECT_EQ(list.back(), 99);
 }
 
-// Тесты для insert() в начало/конец
 TEST(ListTest, InsertEdgeCases) {
     List<int, 5> list;
-    // Вставка в nullptr (конец)
     list.insert(nullptr, 100);
     EXPECT_EQ(list.back(), 100);
 
-    // Вставка в начало
     int* pos = list.begin();
     list.insert(pos, 200);
     EXPECT_EQ(list.front(), 200);
 }
 
-// Тесты для erase() последнего элемента
 TEST(ListTest, EraseLastElement) {
     List<int, 3> list = {1, 2};
     int* last = list.next(list.begin());
@@ -247,9 +236,7 @@ TEST(ListTest, EraseLastElement) {
 
 namespace my_container {
 
-// Тесты для оператора присваивания Container
 TEST(ListTest, ContainerAssignmentOperator) {
-    // Самоприсваивание
     List<int, 3> list;
     list.push_back(1);
     const Container<int, 3>& base_ref = list;
@@ -257,7 +244,6 @@ TEST(ListTest, ContainerAssignmentOperator) {
     EXPECT_EQ(list.size(), 1);
     EXPECT_EQ(list.front(), 1);
 
-    // Присваивание из другого типа контейнера
     class DummyContainer : public Container<int, 3> {
     public:
         Container& operator=(const Container&) override { return *this; }
@@ -277,7 +263,6 @@ TEST(ListTest, ContainerAssignmentOperator) {
     DummyContainer dummy;
     EXPECT_THROW(list = dummy, std::invalid_argument);
 
-    // Копирование элементов из другого List
     List<int, 3> other;
     other.push_back(2);
     other.push_back(3);
@@ -287,22 +272,18 @@ TEST(ListTest, ContainerAssignmentOperator) {
     EXPECT_EQ(list.back(), 3);
 }
 
-// Тесты для метода erase
 TEST(ListTest, EraseOperations) {
     List<int, 5> list = {1, 2, 3, 4};
 
-    // Удаление из середины
     auto pos = list.next(list.next(list.begin()));
     list.erase(pos);
     EXPECT_EQ(list.size(), 3);
     EXPECT_EQ(list.back(), 4);
 
-    // Удаление первого элемента
     pos = list.begin();
     list.erase(pos);
     EXPECT_EQ(list.front(), 2);
 
-    // Удаление последнего элемента
     pos = list.begin();
     while (list.next(pos) != nullptr) {
         pos = list.next(pos);
@@ -311,15 +292,12 @@ TEST(ListTest, EraseOperations) {
     if (!list.empty()) {
         EXPECT_EQ(list.back(), 2);
     } else {
-        // Проверка, что tail стал nullptr, если удалили последний элемент
         EXPECT_EQ(list.rbegin(), nullptr); 
     }
 
-    // Удаление nullptr
     EXPECT_EQ(list.erase(nullptr), nullptr);
 }
 
-// Тест для явной проверки удаления последнего элемента из списка с несколькими элементами
 TEST(ListTest, EraseLastElementFromMultiple) {
     List<int, 3> list = {1, 2, 3};
     auto pos = list.begin();
@@ -330,7 +308,6 @@ TEST(ListTest, EraseLastElementFromMultiple) {
     EXPECT_EQ(list.back(), 2);
 }
 
-// Тесты для обратных итераторов
 TEST(ListTest, ReverseIterators) {
     List<int, 3> empty_list;
     EXPECT_EQ(empty_list.rbegin(), nullptr);
@@ -341,41 +318,35 @@ TEST(ListTest, ReverseIterators) {
     for (auto it = list.rbegin(); it != list.rend(); it = list.prev(it)) {
         sum += *it;
     }
-    EXPECT_EQ(sum, 60); // 30 + 20 + 10
+    EXPECT_EQ(sum, 60);
 
-    // Проверка краевых случаев
     list.pop_back();
     EXPECT_EQ(*list.rbegin(), 20);
 }
 TEST(ListTest, ContainerAssignmentOperator_ZeroCoverage) {
-    // Создаем два списка
     List<int, 3> list1 = {1, 2};
     List<int, 3> list2 = {3, 4, 5};
 
-    // Присваиваем list2 в list1 через указатель на базовый класс
     Container<int, 3>* base_ptr = &list2;
     list1 = *base_ptr;
 
-    // Проверяем, что list1 теперь содержит элементы list2
     EXPECT_EQ(list1.size(), 3);
     EXPECT_EQ(list1.front(), 3);
     EXPECT_EQ(list1.back(), 5);
 
-    // Проверяем, что list2 не изменился
     EXPECT_EQ(list2.size(), 3);
     EXPECT_EQ(list2.front(), 3);
     EXPECT_EQ(list2.back(), 5);
 
-    // Проверяем случай присваивания пустого списка
     List<int, 3> empty_list;
     base_ptr = &empty_list;
     list1 = *base_ptr;
     EXPECT_TRUE(list1.empty());
 }
 
-} // namespace my_container
+}
 
-} // namespace my_container
+}
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);

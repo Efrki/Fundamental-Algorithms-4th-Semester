@@ -42,15 +42,12 @@ TEST(DequeTest, AssignmentOperator) {
 TEST(DequeTest, ElementAccess) {
     Deque<int, 5> dq = {100, 200, 300};
     
-    // operator[]
     EXPECT_EQ(dq[0], 100);
     EXPECT_EQ(dq[2], 300);
     
-    // at()
     EXPECT_EQ(dq.at(1), 200);
     EXPECT_THROW(dq.at(3), std::out_of_range);
     
-    // front/back
     EXPECT_EQ(dq.front(), 100);
     EXPECT_EQ(dq.back(), 300);
 }
@@ -63,7 +60,6 @@ TEST(DequeTest, Iterators) {
     }
     EXPECT_EQ(sum, 30);
 
-    // Reverse
     sum = 0;
     for (auto it = dq.rbegin(); it != dq.rend(); it = dq.prev(it)) {
         sum += *it;
@@ -74,29 +70,24 @@ TEST(DequeTest, Iterators) {
 TEST(DequeTest, Modifiers) {
     Deque<int, 5> dq;
     
-    // push_back/pop_back
     dq.push_back(1);
     dq.push_back(2);
     EXPECT_EQ(dq.back(), 2);
     dq.pop_back();
     EXPECT_EQ(dq.back(), 1);
     
-    // push_front/pop_front
     dq.push_front(0);
     EXPECT_EQ(dq.front(), 0);
     dq.pop_front();
     EXPECT_EQ(dq.front(), 1);
     
-    // insert
     auto pos = dq.begin();
     dq.insert(pos, 99);
     EXPECT_EQ(dq.front(), 99);
     
-    // erase
     dq.erase(pos);
     EXPECT_EQ(dq.size(), 1);
     
-    // resize
     dq.resize(3);
     EXPECT_EQ(dq.size(), 3);
     EXPECT_EQ(dq[2], 0);
@@ -115,17 +106,15 @@ TEST(DequeTest, Comparisons) {
 TEST(DequeTest, EdgeCases) {
     Deque<int, 2> dq;
     
-    // max_size
     dq.push_back(1);
     dq.push_back(2);
     EXPECT_THROW(dq.push_back(3), std::length_error);
     
-    // clear
     dq.clear();
     EXPECT_TRUE(dq.empty());
 }
 
-} // namespace my_container
+}
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);

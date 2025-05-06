@@ -5,27 +5,22 @@
 using namespace my_container;
 
 TEST(VectorTest, Constructors) {
-    // Конструктор по умолчанию
     Vector<int> v1;
     EXPECT_EQ(v1.size(), 0);
     EXPECT_TRUE(v1.empty());
 
-    // Конструктор с размером
     Vector<int> v2(5);
     EXPECT_EQ(v2.size(), 5);
     EXPECT_GE(v2.capacity(), 5);
 
-    // Конструктор со списком инициализации
     Vector<int> v3 = {1, 2, 3};
     EXPECT_EQ(v3.size(), 3);
     EXPECT_EQ(v3[0], 1);
 
-    // Конструктор копирования
     Vector<int> v4(v3);
     EXPECT_EQ(v4.size(), 3);
     EXPECT_EQ(v4[1], 2);
 
-    // Конструктор перемещения
     Vector<int> v5(std::move(v4));
     EXPECT_EQ(v5.size(), 3);
     EXPECT_TRUE(v4.empty());
@@ -35,19 +30,16 @@ TEST(VectorTest, AssignmentOperators) {
     Vector<int> v1 = {1, 2, 3};
     Vector<int> v2;
 
-    // Копирующее присваивание
     v2 = v1;
     EXPECT_EQ(v2.size(), 3);
     EXPECT_EQ(v2[2], 3);
 
-    // Перемещающее присваивание
     Vector<int> v3;
     v3 = std::move(v2);
     EXPECT_EQ(v3.size(), 3);
     EXPECT_TRUE(v2.empty());
 
-    // Присваивание через базовый класс
-    Container<int, 0>& c = v1; // No change here
+    Container<int, 0>& c = v1;
     Vector<int> v4;
     v4 = c;
     EXPECT_EQ(v4.size(), 3);
@@ -57,20 +49,16 @@ TEST(VectorTest, AssignmentOperators) {
 TEST(VectorTest, ElementAccess) {
     Vector<int> v = {10, 20, 30};
 
-    // operator[]
     EXPECT_EQ(v[1], 20);
     v[1] = 25;
     EXPECT_EQ(v[1], 25);
 
-    // at()
     EXPECT_EQ(v.at(2), 30);
     EXPECT_THROW(v.at(3), std::out_of_range);
 
-    // front/back
     EXPECT_EQ(v.front(), 10);
     EXPECT_EQ(v.back(), 30);
 
-    // data()
     EXPECT_NE(v.data(), nullptr);
 }
 
@@ -91,7 +79,6 @@ TEST(VectorTest, CapacityMethods) {
 TEST(VectorTest, Modifiers) {
     Vector<int> v;
 
-    // push_back/pop_back
     v.push_back(10);
     v.push_back(20);
     EXPECT_EQ(v.size(), 2);
@@ -99,14 +86,12 @@ TEST(VectorTest, Modifiers) {
     v.pop_back();
     EXPECT_EQ(v.back(), 10);
 
-    // insert/erase
     v.insert(1, 15);
     EXPECT_EQ(v[1], 15);
     
     v.erase(0);
     EXPECT_EQ(v[0], 15);
 
-    // resize
     v.resize(5);
     EXPECT_EQ(v.size(), 5);
     
@@ -141,19 +126,16 @@ TEST(VectorTest, IteratorValidity) {
     
     EXPECT_EQ(*it, 1);
     v.push_back(4);
-    // Проверка инвалидации итераторов
     EXPECT_NE(it, v.begin()); 
 }
 
 TEST(VectorTest, IteratorMethods) {
     Vector<int> v = {1, 2, 3};
 
-    // begin(), end()
     EXPECT_EQ(*v.begin(), 1);
     EXPECT_EQ(*(v.end() - 1), 3);
     EXPECT_NE(v.begin(), v.end());
 
-    // cbegin(), cend()
     const Vector<int>& cv = v;
     EXPECT_EQ(*cv.cbegin(), 1);
     EXPECT_EQ(*(cv.cend() - 1), 3);
@@ -163,12 +145,10 @@ TEST(VectorTest, IteratorMethods) {
 TEST(VectorTest, ConstIteratorMethods) {
     const Vector<int> v = {1, 2, 3};
 
-    // begin(), end() const
     EXPECT_EQ(*v.begin(), 1);
     EXPECT_EQ(*(v.end() - 1), 3);
     EXPECT_NE(v.begin(), v.end());
 
-    // cbegin(), cend() const
     EXPECT_EQ(*v.cbegin(), 1);
     EXPECT_EQ(*(v.cend() - 1), 3);
     EXPECT_NE(v.cbegin(), v.cend());

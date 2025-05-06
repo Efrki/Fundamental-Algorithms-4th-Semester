@@ -6,13 +6,11 @@ namespace my_container {
     template <typename T, size_t N>
     class Deque : public List<T, N> {
     public:
-        // Конструкторы
         Deque() = default;
         Deque(const Deque& other) : List<T, N>(other) {}
         Deque(Deque&& other) noexcept : List<T, N>(std::move(other)) {}
         Deque(std::initializer_list<T> init) : List<T, N>(init) {}
     
-        // Операторы присваивания
         Deque& operator=(const Deque& other) {
             List<T, N>::operator=(other);
             return *this;
@@ -23,7 +21,6 @@ namespace my_container {
             return *this;
         }
     
-        // Методы доступа с проверкой индекса
         T& at(size_t pos) {
             return const_cast<T&>(static_cast<const Deque*>(this)->at(pos));
         }
@@ -42,19 +39,16 @@ namespace my_container {
         }
     
     private:
-        // Вспомогательный метод для доступа по индексу (константная версия)
         const T* get_iterator_at(size_t pos) const {
             if (pos >= this->size()) return nullptr;
             const T* it = this->begin();
             for (size_t i = 0; i < pos; ++i) {
-                // Используем const_cast для вызова неконстантного next()
                 it = this->next(const_cast<T*>(it));
             }
             return it;
         }
     
     public:
-        // Переопределение методов List
         using List<T, N>::front;
         using List<T, N>::back;
         using List<T, N>::begin;
@@ -74,7 +68,6 @@ namespace my_container {
         using List<T, N>::resize;
         using List<T, N>::swap;
     
-        // Операторы сравнения
         bool operator==(const Deque& other) const {
             return List<T, N>::operator==(other);
         }
@@ -84,4 +77,4 @@ namespace my_container {
         }
     };
     
-    } // namespace my_container
+    }
