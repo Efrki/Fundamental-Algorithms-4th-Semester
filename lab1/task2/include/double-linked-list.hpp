@@ -7,7 +7,7 @@
 
 namespace my_container {
 
-template <typename T, size_t N>
+template <typename T, size_t N = 0>
 class List : public Container<T, N> {
 private:
     struct Node {
@@ -44,7 +44,7 @@ public:
         }
     }
 
-    ~List() {
+    virtual ~List() {
         clear();
     }
 
@@ -154,7 +154,7 @@ public:
 
     bool empty() const override { return current_size == 0; }
     size_t size() const override { return current_size; }
-    size_t max_size() const override { return N; }
+    size_t max_size() const override { return current_size; }
 
     void clear() {
         while (!empty()) {
@@ -163,7 +163,6 @@ public:
     }
 
     void push_back(const T& value) {
-        if (current_size >= N) throw std::length_error("List max size exceeded");
         Node* newNode = new Node(value, nullptr, tail);
         if (tail) {
             tail->next = newNode;
@@ -188,7 +187,6 @@ public:
     }
 
     void push_front(const T& value) {
-        if (current_size >= N) throw std::length_error("List max size exceeded");
         Node* newNode = new Node(value, head, nullptr);
         if (head) {
             head->prev = newNode;
@@ -213,7 +211,6 @@ public:
     }
 
     T* insert(T* pos, const T& value) {
-        if (current_size >= N) throw std::length_error("List max size exceeded");
         if (pos == nullptr) {
             push_back(value);
             return &tail->data;
@@ -249,7 +246,6 @@ public:
     }
 
     void resize(size_t count) {
-        if (count > N) throw std::length_error("Resize exceeds max size");
         while (current_size > count) pop_back();
         while (current_size < count) push_back(T());
     }

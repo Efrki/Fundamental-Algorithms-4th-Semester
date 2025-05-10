@@ -27,6 +27,7 @@ private:
 
 public:
     Stack() = default;
+    virtual ~Stack() = default;
 
     Stack(const Stack& other) : c(other.c) {}
 

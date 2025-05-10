@@ -7,7 +7,7 @@ TEST(ListTest, DefaultConstructor) {
     List<int, 5> list;
     EXPECT_TRUE(list.empty());
     EXPECT_EQ(list.size(), 0);
-    EXPECT_EQ(list.max_size(), 5);
+    EXPECT_EQ(list.max_size(), 0);
 }
 
 TEST(ListTest, InitializerListConstructor) {
@@ -120,14 +120,6 @@ TEST(ListTest, ClearResize) {
     list.resize(3);
     EXPECT_EQ(list.size(), 3);
     EXPECT_EQ(list.back(), 0);
-}
-
-TEST(ListTest, MaxSizeExceeded) {
-    List<int, 2> list;
-    list.push_back(1);
-    list.push_back(2);
-    EXPECT_THROW(list.push_back(3), std::length_error);
-    EXPECT_THROW(list.insert(list.begin(), 0), std::length_error);
 }
 
 TEST(ListTest, Swap) {

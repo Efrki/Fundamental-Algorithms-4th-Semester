@@ -23,6 +23,7 @@ int main() {
         stack.push(40);
         stack.push(50);
         stack.push(60);
+    
 
     } catch (const std::exception& e) {
         std::cerr << "\nОшибка: " << e.what() << std::endl;
